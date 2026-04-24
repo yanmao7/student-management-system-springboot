@@ -21,6 +21,13 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
+          cache: maven
 
       - name: Build with Maven
-        run: mvn clean install
+        run: mvn clean verify
+
+      - name: Run docker-compose
+        run: docker-compose up -d --build
+
+      - name: Check service
+        run: curl -f http://localhost:8080 
