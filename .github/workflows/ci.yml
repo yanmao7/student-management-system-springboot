@@ -28,6 +28,9 @@ jobs:
 
       - name: Run docker-compose
         run: docker compose up -d --build
+        
+      - name: Show container logs
+        run: docker compose logs
 
       - name: Check service
         run: curl -f http://localhost:8080
