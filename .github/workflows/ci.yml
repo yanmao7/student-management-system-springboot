@@ -28,9 +28,18 @@ jobs:
 
       - name: Run docker-compose
         run: docker compose up -d --build
+
+      - name: Wait for MySQL to be ready
+        run: |
+          for i in {1..30}; do
+            docker compose exec -T db mysqladmin ping -h localhost -u root -proot && break || sleep 2
+          done
         
       - name: Wait for app
-        run: sleep 25
+        run: |
+          for i in {1..60}; do
+            curl -f http://localhost:8080/actuator/health && break || sleep 2
+          done
         
       - name: Show container logs
         run: docker compose logs
